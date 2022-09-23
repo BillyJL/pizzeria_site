@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function PizzaBlock({title, price, imageUrl, sizes, types}) {
+function PizzaBlock({title, price, imageUrl, sizes, types, id}) {
     const typesName = ['Thin', 'Thick'];
 
     const [activeType, setActiveType] = useState(0);
@@ -12,30 +12,32 @@ function PizzaBlock({title, price, imageUrl, sizes, types}) {
     };
 
     return (
-        <div class="pizza-block">
+        <div className="pizza-block">
             <img
-                class="pizza-block__image"
+                className="pizza-block__image"
                 src={imageUrl}
                 alt="Pizza"
             />
-            <h4 class="pizza-block__title">{title}</h4>
-            <div class="pizza-block__selector">
+            <h4 className="pizza-block__title">{title}</h4>
+            <div className="pizza-block__selector">
                 <ul>
                     {
-                        types.map(typeId => <li className={activeType === typeId ? 'active' : ''}
+                        types.map(typeId => <li key={typeId}
+                                                className={activeType === typeId ? 'active' : ''}
                                                 onClick={() => setActiveType(typeId)}>{typesName[typeId]}</li>)
                     }
                 </ul>
                 <ul>
                     {
-                        sizes.map((size, index) => <li className={activeSize === index ? 'active' : ''}
-                                                    onClick={() => {setActiveSize(index)}}>{size} inch</li>)
+                        sizes.map((size, index) => <li key={size}
+                                                       className={activeSize === index ? 'active' : ''}
+                                                       onClick={() => {setActiveSize(index)}}>{size} inch</li>)
                     }
                 </ul>
             </div>
-            <div class="pizza-block__bottom">
-                <div class="pizza-block__price">from {price} $</div>
-                <button class="button button--outline button--add"
+            <div className="pizza-block__bottom">
+                <div className="pizza-block__price">from {price} $</div>
+                <button className="button button--outline button--add"
                         onClick={onClickAdd}>
                     <svg
                         width="12"
