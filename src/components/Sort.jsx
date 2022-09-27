@@ -1,14 +1,16 @@
 import { useState } from "react";
 
-function Sort() {
+function Sort({ selectedSort, onClickSort }) {
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedSort, setSelectedSort] = useState(0);
-    const list = ['popularity', 'price', 'alphabetically'];
+    const list = [{name: 'popularity', sortProperty: 'rating'}, 
+                  {name: 'price', sortProperty: 'price'}, 
+                  {name: 'alphabetically', sortProperty: 'title'}];
 
     const onClickListItem = (index) => {
-        setSelectedSort(index);
+        onClickSort(index);
         setIsVisible(false);
     };
+
 
     return (
         <div className="sort">
@@ -27,7 +29,7 @@ function Sort() {
                     />
                 </svg>
                 <b>Sort by:</b>
-                <span>{list[selectedSort]}</span>
+                <span>{selectedSort.name}</span>
             </div>
             {
                 isVisible && (
@@ -35,9 +37,9 @@ function Sort() {
                         <ul>
                             {list.map((item, index) => (
                                 <li key={index}
-                                    onClick={() => onClickListItem(index)}
-                                    className={selectedSort === index ? 'active' : ''}>
-                                    {item}
+                                    onClick={() => onClickListItem(item)}
+                                    className={selectedSort.sortProperty === item.sortProperty ? 'active' : ''}>
+                                    {item.name}
                                 </li>
                             ))}
                         </ul>
