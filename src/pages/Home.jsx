@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { SearchContext } from '../components/App';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlockSkeleton';
 
-function Home({ searchValue, setSearchValue }) {
+function Home() {
+    const { searchValue } = useContext(SearchContext);
     const [pizzas, setPizzas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [categoryId, setCategoryId] = useState(0);
@@ -22,7 +24,6 @@ function Home({ searchValue, setSearchValue }) {
                 setPizzas(json);
                 setIsLoading(false);
             });
-        window.scrollTo(0, 0);
     }, [categoryId, selectedSort, searchValue]);
 
     return (
