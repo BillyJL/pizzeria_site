@@ -1,5 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { SearchContext } from '../components/App';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -7,30 +9,35 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlockSkeleton';
 
 function Home() {
+    const dispatch = useDispatch();
+    const { categoryId, sort } = useSelector(state => state.filter);
+
     const { searchValue } = useContext(SearchContext);
     const [pizzas, setPizzas] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [categoryId, setCategoryId] = useState(0);
-    const [selectedSort, setSelectedSort] = useState({ name: 'popularity', sortProperty: 'rating' });
+
+    const onChangeCategory = (id) => {
+        dispatch(setCategoryId(id));
+    };
 
     useEffect(() => {
         setIsLoading(true);
         fetch(`https://632dac792cfd5ccc2af424bf.mockapi.io/pizzas?${categoryId > 0 ? `category=${categoryId}` : ''
-            }&sortBy=${selectedSort.sortProperty
-            }&order=${selectedSort.sortProperty === 'title' ? 'asc' : 'desc'
+            }&sortBy=${sort.sortProperty
+            }&order=${sort.sortProperty === 'title' ? 'asc' : 'desc'
             }${searchValue ? `&search=${searchValue}` : ''}`)
             .then(res => res.json())
             .then(json => {
                 setPizzas(json);
                 setIsLoading(false);
             });
-    }, [categoryId, selectedSort, searchValue]);
+    }, [categoryId, sort, searchValue]);
 
     return (
         <div className="container">
             <div className="content__top">
-                <Categories categoryId={categoryId} onClickCategory={setCategoryId} />
-                <Sort selectedSort={selectedSort} onClickSort={setSelectedSort} />
+                <Categories categoryId={categoryId} onClickCategory={onChangeCategory} />
+                <Sort />
             </div>
             <h2 className="content__title">All pizzas</h2>
             <div className="content__items">
