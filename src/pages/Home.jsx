@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import { SearchContext } from '../components/App';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategoryId } from '../redux/slices/filterSlice';
@@ -22,15 +23,14 @@ function Home() {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch(`https://632dac792cfd5ccc2af424bf.mockapi.io/pizzas?${categoryId > 0 ? `category=${categoryId}` : ''
+        axios.get(`https://632dac792cfd5ccc2af424bf.mockapi.io/pizzas?${categoryId > 0 ? `category=${categoryId}` : ''
             }&sortBy=${sort.sortProperty
             }&order=${sort.sortProperty === 'title' ? 'asc' : 'desc'
             }${searchValue ? `&search=${searchValue}` : ''}`)
-            .then(res => res.json())
-            .then(json => {
-                setPizzas(json);
+            .then(res => {
+                setPizzas(res.data);
                 setIsLoading(false);
-            });
+            })
     }, [categoryId, sort, searchValue]);
 
     return (
