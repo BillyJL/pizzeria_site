@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { SearchContext } from '../components/App';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCategoryId } from '../redux/slices/filterSlice';
+import { SearchContext } from '../components/App';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
